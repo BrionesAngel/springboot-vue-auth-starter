@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17 
-    container_name: authapp-postgres
+    container_name: app-postgres
     restart: always
     profiles: ["db", "fullstack"] 
     environment:
@@ -20,7 +20,7 @@ services:
 
   backend:
     build: ./backend
-    container_name: authapp-backend
+    container_name: app-backend
     profiles: ["fullstack"]
     ports:
       - "8080:8080"
@@ -36,7 +36,7 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: authapp-frontend
+    container_name: app-frontend
     profiles: ["fullstack"]
     ports:
       - "3000:3000"
