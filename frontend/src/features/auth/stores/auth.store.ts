@@ -1,18 +1,24 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { authService } from '../services/auth.service.ts'
+import { authService } from '../services/auth.service'
 import type { LoginRequest, RegisterRequest } from '../dtos/auth.dtos.ts'
 
 const TOKEN_KEY = 'token'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(null)
-  const isLoading = ref(false)
-  const isAuthenticated = computed(() => Boolean(token.value))
 
   function initializeFromStorage() {
     token.value = localStorage.getItem(TOKEN_KEY)
   }
+  initializeFromStorage()
+
+  const isLoading = ref(false)
+  const isAuthenticated = computed(() => Boolean(token.value))
+
+
+
+
 
   async function login(credentials: LoginRequest) {
     isLoading.value = true
@@ -45,7 +51,6 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     isLoading,
     isAuthenticated,
-    initializeFromStorage,
     login,
     register,
     logout,
