@@ -1,18 +1,9 @@
 package com.example.backend.exceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-public class ErrorResponse {
-    private String message;
-    private int status;
-    private LocalDateTime timestamp;
-
-    public ErrorResponse(String message) {
-        this.message = message;
-        this.timestamp = LocalDateTime.now();
-    }
+public record ErrorResponse(
+    String message,
+    int status,
+    LocalDateTime timestamp) {
 }
