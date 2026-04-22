@@ -2,6 +2,8 @@ package com.example.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,4 +19,10 @@ public class BackendApplication {
     SpringApplication.run(BackendApplication.class, args);
   }
 
+  @EventListener(ApplicationReadyEvent.class)
+  public void onReady() {
+    System.out.println("\n" + "=".repeat(50));
+    System.out.println("   APP READY ");
+    System.out.println("=".repeat(50) + "\n");
+  }
 }
