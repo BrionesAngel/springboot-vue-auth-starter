@@ -9,26 +9,32 @@ export class HttpError extends Error {
   }
 }
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '',
+const baseConfig = {
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
   headers: {
     'Content-Type': 'application/json'
   }
-})
+}
 
-api.interceptors.request.use(config => {
+const publicApi = axios.create(baseConfig)
+const privateApi = axios.create(baseConfig)
+
+privateApi.interceptors.request.use(config => {
   const token = localStorage.getItem('token')
   if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 })
 
-api.interceptors.response.use(
-  response => response,
-  error => {
-    const status = error.response?.status
-    const message = error.response?.data?.message ?? `Request failed with status ${status}`
-    return Promise.reject(new HttpError(message, status))
-  }
-)
+const handleError = (error: any) => {
+  const status = error.response?.status
+  const message =
+    error.response?.data?.message ??
+    `Request failed with status ${status}`
 
-export default api
+  return Promise.reject(new HttpError(message, status))
+}
+
+publicApi.interceptors.response.use(res => res, handleError)
+privateApi.interceptors.response.use(res => res, handleError)
+
+export { publicApi, privateApi }
