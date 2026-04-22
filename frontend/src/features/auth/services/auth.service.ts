@@ -1,11 +1,11 @@
-import api from '@/api/axios.ts'
+import { publicApi } from '@/api/axios'
 import type { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../dtos/auth.dtos.ts'
 
 export const authService = {
   login(payload: LoginRequest) {
-    return api.post<LoginResponse>('/auth/login', payload)
+    return publicApi.post<LoginResponse>('/auth/login', payload)
   },
   register(payload: RegisterRequest) {
-    return api.post<RegisterResponse>('/auth/register', payload)
+    return publicApi.post<RegisterResponse>('/auth/register', payload)
   }
 }
