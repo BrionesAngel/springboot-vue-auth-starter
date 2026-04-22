@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public @NonNull UserDetails loadUserByUsername(@NonNull String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email);
         if(user == null){
-            throw new UserNotFoundException("User not found");
+            throw new UsernameNotFoundException("Incorrect Email");
         }
 
         return new org.springframework.security.core.userdetails.User(
