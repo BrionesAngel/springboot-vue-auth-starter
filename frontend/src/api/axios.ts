@@ -25,13 +25,15 @@ privateApi.interceptors.request.use(config => {
   return config
 })
 
+import { getFriendlyMessage } from './error.messages'
+
 const handleError = (error: any) => {
   if (!error.response) {
     return Promise.reject(new HttpError('Network error', 0))
   }
-
   const status = error.response.status
-  const message = error.response.data?.message ?? `Request failed with status ${status}`
+  const code = error.response.data?.message ?? `Request failed with status ${status}`
+  const message = getFriendlyMessage(code)
   return Promise.reject(new HttpError(message, status))
 }
 
