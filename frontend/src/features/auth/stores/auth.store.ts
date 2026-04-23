@@ -16,10 +16,6 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoading = ref(false)
   const isAuthenticated = computed(() => Boolean(token.value))
 
-
-
-
-
   async function login(credentials: LoginRequest) {
     isLoading.value = true
     try {
