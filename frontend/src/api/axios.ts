@@ -26,11 +26,12 @@ privateApi.interceptors.request.use(config => {
 })
 
 const handleError = (error: any) => {
-  const status = error.response?.status
-  const message =
-    error.response?.data?.message ??
-    `Request failed with status ${status}`
+  if (!error.response) {
+    return Promise.reject(new HttpError('Network error', 0))
+  }
 
+  const status = error.response.status
+  const message = error.response.data?.message ?? `Request failed with status ${status}`
   return Promise.reject(new HttpError(message, status))
 }
 
