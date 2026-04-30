@@ -21,8 +21,8 @@ public class JwtService {
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
-  public String generateToken(String subject) {
-    long jwtExpirationMs = 1000 * 60 * 60;
+  public String generateAccessToken(String subject) {
+    long jwtExpirationMs = 1000 * 60 * 15;
 
     return Jwts.builder()
         .subject(subject)

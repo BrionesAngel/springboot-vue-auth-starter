@@ -1,5 +1,10 @@
 package com.example.backend.users;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.backend.auth.security.RefreshToken;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +18,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
-    private String password;
-    private String email;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String username;
+  private String password;
+  private String email;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  private List<RefreshToken> refreshTokens = new ArrayList<>();
 }

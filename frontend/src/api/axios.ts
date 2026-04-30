@@ -20,10 +20,47 @@ const publicApi = axios.create(baseConfig)
 const privateApi = axios.create(baseConfig)
 
 privateApi.interceptors.request.use(config => {
-  const token = localStorage.getItem('token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  const accessToken = localStorage.getItem('accessToken')
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`
+  }
   return config
 })
+
+privateApi.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config
+
+    if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry) {
+      originalRequest._retry = true
+
+      try {
+        const refreshToken = localStorage.getItem('refreshToken')
+
+        const response = await publicApi.post(
+          '/auth/refresh',
+          { refreshToken }
+        )
+
+        const { accessToken, refreshToken: newRefreshToken } = response.data
+
+        localStorage.setItem('accessToken', accessToken)
+        localStorage.setItem('refreshToken', newRefreshToken)
+
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`
+        return privateApi(originalRequest)
+      } catch (refreshError) {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        window.location.href = '/login'
+        return Promise.reject(refreshError)
+      }
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 import { getFriendlyMessage } from './error.messages'
 

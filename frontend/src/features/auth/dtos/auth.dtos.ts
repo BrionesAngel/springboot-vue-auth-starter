@@ -4,7 +4,8 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  token: string
+  accessToken: string
+  refreshToken: string
 }
 
 export interface RegisterRequest {
@@ -14,5 +15,15 @@ export interface RegisterRequest {
 }
 
 export interface RegisterResponse {
-  token: string
+  accessToken: string
+  refreshToken: string
+}
+
+export interface RefreshRequest {
+  refreshToken: string
+}
+
+export interface RefreshResponse {
+  accessToken: string
+  refreshToken: string
 }
