@@ -1,5 +1,5 @@
 import { publicApi } from '@/api/axios'
-import type { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../dtos/auth.dtos.ts'
+import type { LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterRequest, RegisterResponse } from '../dtos/auth.dtos.ts'
 
 export const authService = {
   login(payload: LoginRequest) {
@@ -7,5 +7,8 @@ export const authService = {
   },
   register(payload: RegisterRequest) {
     return publicApi.post<RegisterResponse>('/auth/register', payload)
+  },
+  refresh(payload: RefreshRequest) {
+    return publicApi.post<RefreshResponse>('/auth/refresh', payload)
   }
 }
